@@ -1,0 +1,4 @@
+add_lunch_combo dhollmen_p3100-userdebug
+add_lunch_combo dhollmen_p3110-userdebug
+add_lunch_combo dhollmen_p5100-userdebug
+add_lunch_combo dhollmen_p5110-userdebug

@@ -1,0 +1,177 @@
+#!/bin/sh
+# Squish a CM otapackage for distribution
+# cyanogen
+# Tuxafgmur - Dhollmen
+
+. $ANDROID_BUILD_TOP/vendor/dhollmen/tools/colors
+
+OUT_TARGET_HOST=linux-x86
+MD5=md5sum
+XARGS="xargs --max-args=1 --max-procs `grep 'processor' /proc/cpuinfo|wc -l`"
+SED=sed
+
+if [ -z "$OUT" -o ! -d "$OUT" ]; then
+    echo "ERROR: $0 only works with a full build environment. $OUT should exist."
+    exit 1
+fi
+
+if [ "$TARGET_BUILD_TYPE" = "debug" ]; then
+    OTAPACKAGE=$OUT/${TARGET_PRODUCT}_debug-ota-$TARGET_BUILD_VARIANT.$USER.zip
+elif [ "$TARGET_BUILD_VARIANT" = "userdebug" ]; then
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+elif [ "$TARGET_BUILD_VARIANT" = "user" ]; then
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+else
+    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-$TARGET_BUILD_VARIANT.$USER.zip
+fi
+if [ ! -f "$OTAPACKAGE" ]; then
+    echo "$OTAPACKAGE doesn't exist!";
+    exit 1
+fi
+
+OPTICHARGER=$ANDROID_BUILD_TOP/vendor/dhollmen/tools/opticharger
+QUIET=-q
+
+DELETE_BINS="applypatch"
+DELETE_LIBS="libc_malloc_debug_leak.so libc_malloc_debug_qemu.so"
+DELETE_HWLIBS="audio.primary.default.so camera.omap4.so power.default.so"
+DELETE_VENDORHWLIBS="hwcomposer.omap4.so"
+DELETE_MEDIA="bootanimation.zip"
+DELETE_FONTS="MTLmr3m.ttf"
+
+REPACK=$OUT/repack.d
+printf "Sanitizing environment..."
+rm -rf $REPACK
+mkdir -p $REPACK
+echo
+
+# Unpack the otapackage and opticharge all apks
+mkdir $REPACK/ota
+(
+cd $REPACK/ota
+printf "Unpacking $OTAPACKAGE..."
+unzip $QUIET $OTAPACKAGE
+echo
+
+# Move all apks to the same directory so xargs can use also with framework-res.apk.
+# This allow process framework-res.apk in parallel with other apks
+mkdir -p $REPACK/parallel
+cd $REPACK/parallel
+cp $REPACK/ota/system/framework/framework-res.apk .
+cp $REPACK/ota/system/app/*.apk .
+for f in $REPACK/ota/system/priv-app/*.apk; do
+    cp $f ./priv-app-$(basename $f)
+done
+# Do optimization in parallel
+find ./ -name \*.apk | $XARGS $OPTICHARGER
+# Move optimized apks to repack directory
+mv -f $REPACK/parallel/framework-res.apk $REPACK/ota/system/framework/framework-res.apk
+for f in $REPACK/parallel/priv-app*.apk; do
+    mv $f $REPACK/ota/system/priv-app/$(basename $f | cut -d'-' -f3)
+done
+mv -f $REPACK/parallel/*.apk $REPACK/ota/system/app/
+# Return to directory
+cd $REPACK/ota
+rm -rf $REPACK/parallel
+)
+
+# Delete unnecessary binaries
+( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
+# Delete unnecessary libraries
+( cd $REPACK/ota/system/lib; echo $DELETE_LIBS | xargs rm -f; )
+# Delete unnecessary HW libraries
+( cd $REPACK/ota/system/lib/hw; echo $DELETE_HWLIBS | xargs rm -f; )
+# Delete unnecessary Vendor/HW libraries
+( cd $REPACK/ota/system/vendor/lib/hw; echo $DELETE_VENDORHWLIBS | xargs rm -f; )
+# Delete unnecessary Media files
+( cd $REPACK/ota/system/media/; echo $DELETE_MEDIA | xargs rm -f; )
+# Delete Unnecessary Fonts
+( cd $REPACK/ota/system/fonts; echo $DELETE_FONTS | xargs rm -f; )
+
+# No need
+rm -rf $REPACK/ota/system/core
+rm -rf $REPACK/ota/system/etc/recovery-resource.dat
+
+# Strip modules
+[ -d $REPACK/ota/system/lib/modules ] && \
+	find $REPACK/ota/system/lib/modules -name "*.ko" -print0 | xargs -0 arm-eabi-strip --strip-unneeded
+
+# Fix LCD Density
+DEVICELCD=`sed -n -e'/ro\.sf\.lcd_density/s/^.*=//p' $OUT/system/build.prop`
+if [ "$DEVICELCD" = "240" ]; then
+   sed -i 's/ro.sf.lcd_density=240/ro.sf.lcd_density=182/g' $OUT/system/build.prop
+elif [ "$DEVICELCD" = "320" ]; then
+    sed -i 's/ro.sf.lcd_density=320/ro.sf.lcd_density=245/g' $OUT/system/build.prop
+elif [ "$DEVICELCD" = "480" ]; then
+    sed -i 's/ro.sf.lcd_density=480/ro.sf.lcd_density=370/g' $OUT/system/build.prop
+elif [ "$DEVICELCD" = "213" ]; then
+    sed -i 's/ro.sf.lcd_density=213/ro.sf.lcd_density=182/g' $OUT/system/build.prop
+fi
+
+# Device specific LCD Density fix
+DEVICEID=`sed -n -e'/ro\.product\.device/s/^.*=//p' $OUT/system/build.prop`
+if [ "$DEVICEID" = "SGH-I717" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
+elif [ "$DEVICEID" = "GT-N7000" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
+elif [ "$DEVICEID" = "mako" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
+elif [ "$DEVICEID" = "flo" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
+elif [ "$DEVICEID" = "deb" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
+elif [ "$DEVICEID" = "amami" ]; then
+   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
+fi
+cp -f $OUT/system/build.prop $REPACK/ota/system/build.prop
+
+# Determine what to name the new signed package
+MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $REPACK/ota/system/build.prop`
+OUTFILE=$OUT/$MODVERSION.zip
+echo MODVERSION: $MODVERSION
+
+# Pack it up and sign
+printf "Zipping package..."
+( cd $REPACK/ota; zip $QUIET -r $REPACK/update.zip . )
+echo
+printf "Signing package..."
+SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
+java -Xmx1024m \
+	-jar $OUT/../../../host/$OUT_TARGET_HOST/framework/signapk.jar \
+	-w $SECURITYDIR/testkey.x509.pem $SECURITYDIR/testkey.pk8 \
+	$REPACK/update.zip $OUTFILE
+echo
+printf "Cleaning up..."
+rm -rf $REPACK
+echo
+
+# Clean
+rm `dirname $OUTFILE`/system.img
+rm `dirname $OUTFILE`/ramdisk-recovery*
+for q in $(echo `dirname $OUTFILE`/*-ota-*.zip); do
+	rm $q
+done
+for q in $(echo `dirname $OUTFILE`/obj/PACKAGING/apkcerts_intermediates/*); do
+	rm $q
+done
+for q in $(echo `dirname $OUTFILE`/obj/PACKAGING/systemimage_intermediates/*); do
+	rm $q
+done
+for q in $(echo `dirname $OUTFILE`/obj/PACKAGING/target_files_intermediates/*); do
+	rm -r $q
+done
+
+# Create a md5 checksum image of the repacked package
+(
+img=`basename $OUTFILE`
+cd `dirname $OUTFILE`
+$MD5 $img >$img.md5sum
+ZIPSIZE=`ls -lah $OUTFILE | awk '{ print $5}' `
+echo -e $CL_CYN"Package complete"$CL_RST
+echo -e $CL_CYN"zip:"$CL_MAG" $OUTFILE"$CL_RST
+echo -e $CL_CYN"md5:"$CL_MAG" $(cat $img.md5sum | awk '{ print $1 }')"$CL_RST
+echo -e $CL_CYN"size:"$CL_MAG" $ZIPSIZE"$CL_RST
+echo -e
+)
+
+exit 0
