@@ -70,17 +70,12 @@ PRODUCT_PACKAGES += \
     LiveWallpapersPicker \
     PhaseBeam
 
-# DSPManager
-PRODUCT_PACKAGES += \
-    DSPManager \
-    libcyanogen-dsp \
-    audio_effects.conf
-
 # Extra Optional packages
 PRODUCT_PACKAGES += \
     CMFileManager \
     DashClock \
     LatinIME \
+    SoundRecorder \
     Terminal \
     Trebuchet \
     Viper4FX
@@ -111,7 +106,7 @@ PRODUCT_PACKAGE_OVERLAYS += vendor/dhollmen/overlay/common
 # KitKat freeze code
 PRODUCT_VERSION_MAJOR = 4.4.4
 PRODUCT_VERSION_MINOR = build
-PRODUCT_VERSION_MAINTENANCE = 8.1
+PRODUCT_VERSION_MAINTENANCE = 8.2
 ifdef SLIM_BUILD_EXTRA
     SLIM_POSTFIX := -$(SLIM_BUILD_EXTRA)
 endif
