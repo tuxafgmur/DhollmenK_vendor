@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright (c) 2013 SlimRoms Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="shortcut_picker">Accesos Directos</string>
+    <string name="shortcut_immersive">Modo Immersivo</string>
+    <string name="shortcut_quiethours">Modo Descanso</string>
+    <string name="shortcut_rotation">Bloqueo Rotación</string>
+    <string name="shortcut_torch">Linterna</string>
+    <string name="shortcut_last_app">Ultima aplicación</string>
+    <string name="shortcut_chamber">Cámara de los Secretos</string>
+    <string name="chamber_disabled">Cámara de los Secretos cerrada</string>
+    <string name="chamber_int_message">Introducir los valores entre los que desea avanzar. Separar cada valor con una coma. Los parámetros de color aceptan valores hexadecimales como #FF00aacc o colores básicos como red, green, y yellow.</string>
+    <string name="quick_settings_sync">Sincronizar</string>
+    <string name="quick_settings_sync_off">Sincronizar desactivado</string>
+    <string name="quick_settings_quiethours">Descanso activado</string>
+    <string name="quick_settings_quiethours_off">Descanso desactivado</string>
+    <string name="pie_phone_status_emergency_only">Solo llamada de emergencia</string>
+    <string name="status_bar_notification_heads_up_enable_title">Habilitar avisos</string>
+    <string name="status_bar_notification_heads_up_disable_title">Deshabilitar avisos</string>
+    <string name="heads_up_snooze_message">Avisos deshabilitados durante <xliff:g id="number">%d</xliff:g> minutos.</string>
+
+</resources>
