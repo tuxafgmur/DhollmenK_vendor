@@ -88,7 +88,12 @@ PRODUCT_PACKAGES += \
     tune2fs \
     mount.exfat \
     fsck.exfat \
-    mkfs.exfat
+    mkfs.exfat \
+    f2fstat \
+    f2fstat \
+    fibmap.f2fs \
+    fsck.f2fs \
+    mkfs.f2fs
 
 # Stagefright FFMPEG plugin
 PRODUCT_PACKAGES += \
