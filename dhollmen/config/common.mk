@@ -92,6 +92,8 @@ PRODUCT_PACKAGES += \
     f2fstat \
     f2fstat \
     fibmap.f2fs \
+    ntfsfix \
+    ntfs-3g \
     fsck.f2fs \
     mkfs.f2fs
 
