@@ -22,3 +22,17 @@ PRODUCT_COPY_FILES := \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/p5110/system/lib/libril.so:system/lib/libril.so \
     $(LOCAL_PATH)/p5110/system/lib/libsecril-client.so:system/lib/libsecril-client.so \
+
+# Bin
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/p5110/system/bin/bintvoutservice:system/bin/bintvoutservice
+
+# Etc
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/p5110/system/etc/init.d/80_BinTvService:system/etc/init.d/80_BinTvService
+
+# Lib
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/p5110/system/lib/libtvoutinterface.so:system/lib/libtvoutinterface.so \
+    $(LOCAL_PATH)/p5110/system/lib/libtvout_jni.so:system/lib/libtvout_jni.so \
+    $(LOCAL_PATH)/p5110/system/lib/libtvoutservice.so:system/lib/libtvoutservice.so

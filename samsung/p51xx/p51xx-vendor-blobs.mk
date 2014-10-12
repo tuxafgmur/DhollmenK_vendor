@@ -15,7 +15,6 @@
 LOCAL_PATH := vendor/samsung/p51xx
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/common/system/bin/bintvoutservice:system/bin/bintvoutservice \
     $(LOCAL_PATH)/common/system/bin/dock_kbd_attach:system/bin/dock_kbd_attach \
     $(LOCAL_PATH)/common/system/bin/geomagneticd:system/bin/geomagneticd \
     $(LOCAL_PATH)/common/system/bin/gpsd:system/bin/gpsd \
@@ -53,10 +52,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/common/system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so:system/lib/libOMX.TI.DUCATI1.VIDEO.MPEG4E.so \
     $(LOCAL_PATH)/common/system/lib/libOMX_Core.so:system/lib/libOMX_Core.so \
     $(LOCAL_PATH)/common/system/lib/libQmageDecoder.so:system/lib/libQmageDecoder.so \
-    $(LOCAL_PATH)/common/system/lib/libsecnativefeature.so:system/lib/libsecnativefeature.so \
-    $(LOCAL_PATH)/common/system/lib/libtvoutinterface.so:system/lib/libtvoutinterface.so \
-    $(LOCAL_PATH)/common/system/lib/libtvout_jni.so:system/lib/libtvout_jni.so \
-    $(LOCAL_PATH)/common/system/lib/libtvoutservice.so:system/lib/libtvoutservice.so
+    $(LOCAL_PATH)/common/system/lib/libsecnativefeature.so:system/lib/libsecnativefeature.so
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/common/system/vendor/firmware/BCM4330.hcd:system/vendor/firmware/BCM4330.hcd \
