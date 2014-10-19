@@ -29,7 +29,7 @@ PRODUCT_COPY_FILES += \
 
 # Etc
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/p5110/system/etc/init.d/80_BinTvService:system/etc/init.d/80_BinTvService
+    $(LOCAL_PATH)/p5110/system/etc/init.d/70_BinTvService:system/etc/init.d/70_BinTvService
 
 # Lib
 PRODUCT_COPY_FILES += \

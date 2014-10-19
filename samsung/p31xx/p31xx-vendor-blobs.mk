@@ -24,6 +24,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/common/system/bin/smc_pa.ift:system/bin/smc_pa.ift
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/common/system/etc/init.d/70-Clean:system/etc/init.d/70-Clean \
+    $(LOCAL_PATH)/common/system/etc/init.d/80-Fstrim:system/etc/init.d/80-Fstrim
+
+PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/common/system/etc/wifi/bcmdhd_apsta.bin:system/etc/wifi/bcmdhd_apsta.bin \
     $(LOCAL_PATH)/common/system/etc/wifi/bcmdhd_mfg.bin:system/etc/wifi/bcmdhd_mfg.bin \
     $(LOCAL_PATH)/common/system/etc/wifi/bcmdhd_p2p.bin:system/etc/wifi/bcmdhd_p2p.bin \

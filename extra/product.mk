@@ -7,8 +7,7 @@ PRODUCT_COPY_FILES += \
 # Etc
 PRODUCT_COPY_FILES += \
 	vendor/extra/etc/mkshrc:system/etc/mkshrc \
-	vendor/extra/etc/sysctl.conf:system/etc/sysctl.conf \
-	vendor/extra/etc/init.d/90-Clean:system/etc/init.d/90-Clean
+	vendor/extra/etc/sysctl.conf:system/etc/sysctl.conf
 
 # Viper4FX
 PRODUCT_COPY_FILES += \

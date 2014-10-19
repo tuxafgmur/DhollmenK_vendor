@@ -1,6 +1,6 @@
 #!/sbin/sh
 # /system/addon.d/55-initd.sh
-# Dhollmen version
+# Tuxafgmur - Dhollmen
 
 . /tmp/backuptool.functions
 
@@ -16,7 +16,13 @@ initd_files() {
 		for FILE in *; do
 			[ "$FILE" = "*" ] && continue
 			case $FILE in
-				80-BinTvService)
+				*-Selinuxrelabel)
+					;;
+				*-BinTvService)
+					;;
+				*-Clean)
+					;;
+				*-Fstrim)
 					;;
 				*)	add_file etc/init.d/$FILE
 					;;
