@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2012-2014 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="app_description">파일 관리자</string>
+  <string name="theme_default_description">파일 관리자용 라이트 테마입니다.</string>
+  <string name="welcome_msg">파일 관리자에 오신 것을 환영합니다.\n\n이 앱은 파일 시스템을 탐색할 수 있게 해주며, 장치를 망가뜨리는 작업을 할 수도 있습니다. 이러한 손상을 방지하기 위해, 이 앱은 권한이 적은 안전 모드로 시작됩니다.\n\n앱의 설정을 통해 높은 권한의 모드로 변경할 수 있습니다. 높은 권한 모드로 작업할 때엔 시스템을 망가뜨리지 않도록 조심해주십시오. 저희는 그에 대한 책임을 지지 않습니다.</string>
+</resources>

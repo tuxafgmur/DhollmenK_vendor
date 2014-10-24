@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2012-2014 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="app_description">檔案管理器</string>
+  <string name="theme_default_description">用於 檔案管理器的淺色主題。</string>
+  <string name="welcome_msg">歡迎使用 檔案管理器。\n\n 此應用程式允許您瀏覽檔案系統並做出可能破壞您裝置的動作。為了避免損害，此應用程式預設在低權限、安全的模式下執行。\n\n
+        您可以經由設定切換至進階並擁有完全控制的模式。確保操作不會破壞系統將是您的責任。</string>
+</resources>

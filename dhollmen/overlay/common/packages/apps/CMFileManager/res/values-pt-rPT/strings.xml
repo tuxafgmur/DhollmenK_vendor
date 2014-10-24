@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2012-2014 The CyanogenMod Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="app_name">Ficheiros</string>
+  <string name="app_description">Gestor de ficheiros</string>
+  <string name="theme_default_description">Um tema claro para o Gestor de Ficheiros.</string>
+  <string name="welcome_msg">Bem-vindo ao Gestor de Ficheiros. \n\nEsta aplicação permite-lhe explorar o sistema de ficheiros e realizar operações que podem alterar a estabilidade do seu dispositivo. Para previnir falhas, a aplicação irá iniciar num modo de segurança, com poucos previlégios.\n\nPode aceder às definições mais avançadas via Definições. É sua a responsabilidade de garantir que uma operação não afete a estabilidade do seu sistema.</string>
+</resources>
