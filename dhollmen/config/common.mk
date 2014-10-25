@@ -38,10 +38,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/dhollmen/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so
 
-# Copy libgif (Nova Launcher uses it)
-PRODUCT_COPY_FILES += \
-    vendor/dhollmen/prebuilt/common/lib/libgif.so:system/lib/libgif.so
-
 # SELinux filesystem labels
 PRODUCT_COPY_FILES += \
     vendor/dhollmen/prebuilt/common/etc/init.d/50-Selinuxrelabel:system/etc/init.d/50-Selinuxrelabel
@@ -113,7 +109,7 @@ PRODUCT_PACKAGE_OVERLAYS += vendor/dhollmen/overlay/common
 # KitKat freeze code
 PRODUCT_VERSION_MAJOR = 4.4.4
 PRODUCT_VERSION_MINOR = build
-PRODUCT_VERSION_MAINTENANCE = 8.6.1
+PRODUCT_VERSION_MAINTENANCE = 8.8
 ifdef SLIM_BUILD_EXTRA
     SLIM_POSTFIX := -$(SLIM_BUILD_EXTRA)
 endif

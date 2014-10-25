@@ -26,7 +26,7 @@
     <string name="shortcut_last_app">Ultima aplicación</string>
     <string name="shortcut_chamber">Cámara de los Secretos</string>
     <string name="chamber_disabled">Cámara de los Secretos cerrada</string>
-    <string name="chamber_int_message">Introducir los valores entre los que desea avanzar. Separar cada valor con una coma. Los parámetros de color aceptan valores hexadecimales como #FF00aacc o colores básicos como red, green, y yellow.</string>
+    <string name="chamber_int_message">Introducir los valores entre los que avanzar, separados con una coma. Los parámetros de color aceptan valores hexadecimales como #FF00aacc o colores básicos como red, green, y yellow.</string>
     <string name="quick_settings_sync">Sincronizar</string>
     <string name="quick_settings_sync_off">Sincronizar desactivado</string>
     <string name="quick_settings_quiethours">Descanso activado</string>
