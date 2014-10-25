@@ -71,8 +71,8 @@ PRODUCT_PACKAGES += \
     CMFileManager \
     DashClock \
     LatinIME \
+    SlimLauncher \
     SoundRecorder \
-    Terminal \
     Trebuchet \
     Viper4FX
 
