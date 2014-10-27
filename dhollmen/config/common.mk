@@ -73,7 +73,6 @@ PRODUCT_PACKAGES += \
     LatinIME \
     SlimLauncher \
     SoundRecorder \
-    Trebuchet \
     Viper4FX
 
 # Extra tools
