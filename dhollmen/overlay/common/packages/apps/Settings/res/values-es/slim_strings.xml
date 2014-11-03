@@ -16,7 +16,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="adb_over_network_summary">Habilitar la depuración TCP/IP a través de las interfaces de red (Wi-Fi o USB).
     Esta opción se restaura al reinciar</string>
-    <string name="adb_over_network_warning">ATENCIÓN: Cuando ADB por red está habilitado el dispositivo es vulnerable a intrusos conectados a la red, incluida GSM!\n\nSólo se debe utilizar esta función conectado a redes de confianza.\n\n¿Desea habilitar esta función?</string>
+    <string name="adb_over_network_warning">ATENCION: Cuando ADB por red está habilitado el dispositivo es vulnerable a intrusos conectados a la red, incluida GSM!\n\nSolo se debe utilizar esta función conectado a redes de confianza.\n\n¿Deseas habilitar esta función?</string>
     <string name="advanced_reboot_dialog_title">Menú de reinicio avanzado</string>
     <string name="advanced_reboot_summary">Mostrar opciones, en el menú de apagado, para reiniciar en modos especiales</string>
     <string name="app_moving_disable">Deshabilitar mover aplicaciones.</string>
@@ -55,7 +55,7 @@
     <string name="lock_numpad_random_dialog_title">Orden aleatorio del panel de PIN</string>
     <string name="lock_numpad_random_title">Cambiar el orden de los números en el panel de PIN</string>
     <string name="lockscreen_battery_status_summary">Mostrar siempre el estado de la batería</string>
-    <string name="lockscreen_camera_widget_summary">Mostrar widget seguro de cámara en la pantalla de bloqueo</string>
+    <string name="lockscreen_camera_widget_summary">Mostrar el widget de la cámara en la pantalla de bloqueo.</string>
     <string name="lockscreen_lock_icon_slim">Icono de la Rom</string>
     <string name="lockscreen_rotation_landscape">Solo horizontal</string>
     <string name="lockscreen_rotation_portrait">Solo vertical</string>
@@ -70,13 +70,13 @@
     <string name="noti_reminder_interval_3dot5s">3.5 segundos</string>
     <string name="noti_reminder_interval_3s"    >3   segundos</string>
     <string name="noti_reminder_interval_4s">4   segundos</string>
-    <string name="notification_hide_labels_title">Ocultar Wi-Fi/Operador en notificaciones</string>
+    <string name="notification_hide_labels_title">Ocultar Wi-Fi / Operador en notificaciones</string>
     <string name="ok">Aceptar</string>
     <string name="pie_control_size">Tamaño de los controles</string>
     <string name="pie_control_title">Controles PIE</string>
     <string name="pie_trigger_warning">Al menos uno de los bordes, inferior, izquierdo o superior, debe estar habilitado.</string>
     <string name="pie_warning_no_navigation_present">No hay otro método de navegación habilitado. Deshabilitando los controles PIE puede dejar el dispositivo inusable. ¿Habilitar la barra de navegación en su lugar?</string>
-    <string name="privacy_guard_dlg_system_app_text">Cuando se habilita Privacy Guard para una aplicación de sistema, la aplicación no tendrá acceso a datos personales como contactos, mensajes, localización o histórico de llamadas. Esto puede causar que otras aplicaciones no funcionen correctamente.</string>
+    <string name="privacy_guard_dlg_system_app_text">Cuando se habilita Privacy Guard para una aplicación de sistema, la aplicación no tendrá acceso a datos personales como contactos, mensajes, localización o histórico de llamadas. Esto puede provocar que otras aplicaciones no funcionen correctamente.</string>
     <string name="qs_title">Ajustes rápidos</string>
     <string name="quick_tiles_alpha_title">Transparencia del fondo de los botones</string>
     <string name="recent_panel_expanded_mode_summary">Previsualizar los procesos recientes en modo expandido</string>
@@ -85,7 +85,7 @@
     <string name="shake_event_x_title">Horizontalmente</string>
     <string name="shake_event_y_title">Verticalmente</string>
     <string name="shake_event_z_title">Adelante y atrás</string>
-    <string name="shake_to_secure_dlg_message">El dispositivo será inseguro hasta que se agite para habilitar el bloqueo seguro.\nUna vez seguro, si el dispositivo se desbloquea no volverá a aparecer la pantalla de bloqueo seguro hasta que se agite de nuevo.</string>
+    <string name="shake_to_secure_dlg_message">El dispositivo será inseguro hasta que se agite para habilitar el bloqueo.\nUna vez seguro, si el dispositivo se desbloquea no volverá a aparecer la pantalla de bloqueo seguro hasta que se agite de nuevo.</string>
     <string name="shortcut_action_app">Aplicación personalizada</string>
     <string name="shortcut_action_lastapp">Ultima aplicación</string>
     <string name="shortcut_action_pie">Controles PIE</string>
