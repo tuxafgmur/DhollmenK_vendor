@@ -17,5 +17,5 @@
  */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="shortcut_picker">Accesos Directos Slim</string>
+  <string name="shortcut_picker">Συντομεύσεις</string>
 </resources>
