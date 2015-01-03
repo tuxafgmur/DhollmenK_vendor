@@ -33,11 +33,15 @@ OPTICHARGER=$ANDROID_BUILD_TOP/vendor/dhollmen/tools/opticharger
 QUIET=-q
 
 DELETE_BINS="applypatch"
+DELETE_XBINS="libc_test_static memtrack micro_bench_static strace"
 DELETE_LIBS="libc_malloc_debug_leak.so libc_malloc_debug_qemu.so"
-DELETE_HWLIBS="audio.primary.default.so camera.omap4.so power.default.so"
+DELETE_HWLIBS="audio.primary.default.so camera.omap4.so camera.piranha.so power.default.so power.piranha.so"
 DELETE_VENDORHWLIBS="hwcomposer.omap4.so"
 DELETE_MEDIA="bootanimation.zip"
 DELETE_FONTS="MTLmr3m.ttf"
+
+RENAME_HWLIBS="vendor-camera.piranha.so camera.omap4.so"
+RENAME_XBINS="memtrack_share memtrack"
 
 REPACK=$OUT/repack.d
 printf "Sanitizing environment..."
@@ -77,6 +81,7 @@ rm -rf $REPACK/parallel
 
 # Delete unnecessary binaries
 ( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
+( cd $REPACK/ota/system/xbin; echo $DELETE_XBINS | xargs rm -f; )
 # Delete unnecessary libraries
 ( cd $REPACK/ota/system/lib; echo $DELETE_LIBS | xargs rm -f; )
 # Delete unnecessary HW libraries
@@ -87,6 +92,12 @@ rm -rf $REPACK/parallel
 ( cd $REPACK/ota/system/media/; echo $DELETE_MEDIA | xargs rm -f; )
 # Delete Unnecessary Fonts
 ( cd $REPACK/ota/system/fonts; echo $DELETE_FONTS | xargs rm -f; )
+
+# Rename binaries
+( cd $REPACK/ota/system/xbin; echo $RENAME_XBINS | xargs mv; )
+# Rename Hw libs
+( cd $REPACK/ota/system/lib/hw; echo $RENAME_HWLIBS | xargs mv; )
+
 
 # No need
 rm -rf $REPACK/ota/system/core
