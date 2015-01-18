@@ -98,7 +98,6 @@ rm -rf $REPACK/parallel
 # Rename Hw libs
 ( cd $REPACK/ota/system/lib/hw; echo $RENAME_HWLIBS | xargs mv; )
 
-
 # No need
 rm -rf $REPACK/ota/system/core
 rm -rf $REPACK/ota/system/etc/recovery-resource.dat
