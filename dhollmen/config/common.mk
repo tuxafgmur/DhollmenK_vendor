@@ -34,6 +34,11 @@ PRODUCT_COPY_FILES += \
     vendor/dhollmen/prebuilt/common/bin/99-backup.sh:system/addon.d/99-backup.sh \
     vendor/dhollmen/prebuilt/common/etc/backup.conf:system/etc/backup.conf
 
+# Init.d support
+PRODUCT_COPY_FILES += \
+    vendor/dhollmen/prebuilt/common/etc/init.d/70-Clean:system/etc/init.d/70-Clean \
+    vendor/dhollmen/prebuilt/common/etc/init.d/80-Fstrim:system/etc/init.d/80-Fstrim
+    
 # Copy latinime for gesture typing
 PRODUCT_COPY_FILES += \
     vendor/dhollmen/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so

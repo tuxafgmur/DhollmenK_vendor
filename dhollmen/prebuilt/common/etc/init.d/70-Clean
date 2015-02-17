@@ -1,13 +1,14 @@
 #!/system/bin/sh
-# Copyright 2014 Tuxafgmur - Dhollmen
+# Copyright 2014-2015 Tuxafgmur - Dhollmen
 
 [ -f /data/.lastclean ] && . /data/.lastclean
 
-LASTDATE=$(($LASTDATE + 604800))
+LASTDATE=$(($LASTDATE + 432000))
 
 TODAY=$(date -u +%s)
 
 if [ $TODAY -ge $LASTDATE ]; then
+
 	rm -fr /data/bugreports
 	rm -fr /data/dontpanic
 	rm -f  /data/local/tmp/*
@@ -32,7 +33,6 @@ if [ $TODAY -ge $LASTDATE ]; then
 			esac
 		done
 	fi
-
 	LASTDATE=$TODAY
 	echo "LASTDATE=$LASTDATE" > /data/.lastclean
 fi
