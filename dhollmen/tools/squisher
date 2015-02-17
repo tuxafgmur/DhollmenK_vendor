@@ -1,141 +1,165 @@
-#!/bin/sh
-# Squish a CM otapackage for distribution
-# cyanogen
-# Tuxafgmur - Dhollmen
+#!/bin/bash
+# Squish a ota package for distribution
+# Original work: Cyanogen
+# This version : Tuxafgmur - Dhollmen
+
+RenameRepack () {
+	for q in $1; do
+		if [ "$k" == "" ]; then
+			k=$q
+		else
+			mv $REPACK/ota/system/$2/$k $REPACK/ota/system/$2/$q
+			k=""
+		fi
+	done
+}
+
+DeleteRepack () {
+	for q in $1; do
+		rm -f $REPACK/ota/system/$2/$q
+	done
+}
 
 . $ANDROID_BUILD_TOP/vendor/dhollmen/tools/colors
 
 OUT_TARGET_HOST=linux-x86
-MD5=md5sum
-XARGS="xargs --max-args=1 --max-procs `grep 'processor' /proc/cpuinfo|wc -l`"
-SED=sed
 
 if [ -z "$OUT" -o ! -d "$OUT" ]; then
-    echo "ERROR: $0 only works with a full build environment. $OUT should exist."
-    exit 1
+	echo "$0 - ERROR: only works with a full build environment. $OUT should exist."
+	exit 1
 fi
 
 if [ "$TARGET_BUILD_TYPE" = "debug" ]; then
-    OTAPACKAGE=$OUT/${TARGET_PRODUCT}_debug-ota-$TARGET_BUILD_VARIANT.$USER.zip
+	OTAPACKAGE=$OUT/${TARGET_PRODUCT}_debug-ota-$TARGET_BUILD_VARIANT.$USER.zip
 elif [ "$TARGET_BUILD_VARIANT" = "userdebug" ]; then
-    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+	OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
 elif [ "$TARGET_BUILD_VARIANT" = "user" ]; then
-    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
+	OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-eng.$USER.zip
 else
-    OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-$TARGET_BUILD_VARIANT.$USER.zip
+	OTAPACKAGE=$OUT/$TARGET_PRODUCT-ota-$TARGET_BUILD_VARIANT.$USER.zip
 fi
 if [ ! -f "$OTAPACKAGE" ]; then
-    echo "$OTAPACKAGE doesn't exist!";
-    exit 1
+	echo "$0 - ERROR $OTAPACKAGE doesn't exist"
+	exit 1
 fi
 
-OPTICHARGER=$ANDROID_BUILD_TOP/vendor/dhollmen/tools/opticharger
-QUIET=-q
-
-DELETE_BINS="applypatch"
-DELETE_XBINS="libc_test_static memtrack micro_bench_static strace"
-DELETE_LIBS="libc_malloc_debug_leak.so libc_malloc_debug_qemu.so"
-DELETE_HWLIBS="audio.primary.default.so camera.omap4.so camera.piranha.so power.default.so power.piranha.so"
-DELETE_VENDORHWLIBS="hwcomposer.omap4.so"
-DELETE_MEDIA="bootanimation.zip"
-DELETE_FONTS="MTLmr3m.ttf"
-
-RENAME_HWLIBS="vendor-camera.piranha.so camera.omap4.so"
-RENAME_XBINS="memtrack_share memtrack"
-
-REPACK=$OUT/repack.d
-printf "Sanitizing environment..."
-rm -rf $REPACK
-mkdir -p $REPACK
 echo
-
-# Unpack the otapackage and opticharge all apks
-mkdir $REPACK/ota
+REPACK=$OUT/repack.d
+rm    -rf $REPACK
+mkdir -p  $REPACK/ota
 (
 cd $REPACK/ota
-printf "Unpacking $OTAPACKAGE..."
-unzip $QUIET $OTAPACKAGE
-echo
-
-# Move all apks to the same directory so xargs can use also with framework-res.apk.
-# This allow process framework-res.apk in parallel with other apks
-mkdir -p $REPACK/parallel
-cd $REPACK/parallel
-cp $REPACK/ota/system/framework/framework-res.apk .
-cp $REPACK/ota/system/app/*.apk .
-for f in $REPACK/ota/system/priv-app/*.apk; do
-    cp $f ./priv-app-$(basename $f)
-done
-# Do optimization in parallel
-find ./ -name \*.apk | $XARGS $OPTICHARGER
-# Move optimized apks to repack directory
-mv -f $REPACK/parallel/framework-res.apk $REPACK/ota/system/framework/framework-res.apk
-for f in $REPACK/parallel/priv-app*.apk; do
-    mv $f $REPACK/ota/system/priv-app/$(basename $f | cut -d'-' -f3)
-done
-mv -f $REPACK/parallel/*.apk $REPACK/ota/system/app/
-# Return to directory
-cd $REPACK/ota
-rm -rf $REPACK/parallel
+unzip -q $OTAPACKAGE
 )
 
-# Delete unnecessary binaries
-( cd $REPACK/ota/system/bin; echo $DELETE_BINS | xargs rm -f; )
-( cd $REPACK/ota/system/xbin; echo $DELETE_XBINS | xargs rm -f; )
-# Delete unnecessary libraries
-( cd $REPACK/ota/system/lib; echo $DELETE_LIBS | xargs rm -f; )
-# Delete unnecessary HW libraries
-( cd $REPACK/ota/system/lib/hw; echo $DELETE_HWLIBS | xargs rm -f; )
-# Delete unnecessary Vendor/HW libraries
-( cd $REPACK/ota/system/vendor/lib/hw; echo $DELETE_VENDORHWLIBS | xargs rm -f; )
-# Delete unnecessary Media files
-( cd $REPACK/ota/system/media/; echo $DELETE_MEDIA | xargs rm -f; )
-# Delete Unnecessary Fonts
-( cd $REPACK/ota/system/fonts; echo $DELETE_FONTS | xargs rm -f; )
+# -------------------------
+if [ "z$TARGET_OTA_AS_BLOCK" = "z" ]; then
+	DELETE_BINS="applypatch"
+	DELETE_ETCS="recovery-resource.dat"
+	DELETE_FONTS="MTLmr3m.ttf"
+	DELETE_LIBS="libc_malloc_debug_leak.so libc_malloc_debug_qemu.so"
+	DELETE_LIBSHW=""
+	DELETE_MEDIA=""
+	DELETE_VENDORLIBS="libbltsville_ticpu_license.txt"
+	DELETE_VENDORLIBSHW=""
+	DELETE_XBINS="libc_test_static memtrack micro_bench_static strace"
 
-# Rename binaries
-( cd $REPACK/ota/system/xbin; echo $RENAME_XBINS | xargs mv; )
-# Rename Hw libs
-( cd $REPACK/ota/system/lib/hw; echo $RENAME_HWLIBS | xargs mv; )
+	RENAME_BINS=""
+	RENAME_ETCS=""
+	RENAME_FONTS=""
+	RENAME_LIBS=""
+	RENAME_LIBSHW=""
+	RENAME_MEDIA=""
+	RENAME_VENDORLIBS=""
+	RENAME_VENDORLIBSHW=""
+	RENAME_XBINS="memtrack_share memtrack"
 
-# No need
-rm -rf $REPACK/ota/system/core
-rm -rf $REPACK/ota/system/etc/recovery-resource.dat
+	[ -f $OUT/android-info.txt ] && DEVICE_DIR=$(grep device_dir $OUT/android-info.txt)
+	DEVICE_DIR=$ANDROID_BUILD_TOP/device/${DEVICE_DIR##*=}
+	[ -f $DEVICE_DIR/squisher.txt ] && . $DEVICE_DIR/squisher.txt
 
-# Strip modules
-[ -d $REPACK/ota/system/lib/modules ] && \
-	find $REPACK/ota/system/lib/modules -name "*.ko" -print0 | xargs -0 arm-eabi-strip --strip-unneeded
+	DELETE_BINS="$DELETE_BINS $DELETE_DEVICE_BINS"
+	DELETE_ETCS="$DELETE_ETCS $DELETE_DEVICE_ETCS"
+	DELETE_FONTS="$DELETE_FONTS $DELETE_DEVICE_FONTS"
+	DELETE_LIBS="$DELETE_LIBS $DELETE_DEVICE_LIBS"
+	DELETE_LIBSHW="$DELETE_LIBSHW $DELETE_DEVICE_LIBSHW"
+	DELETE_MEDIA="$DELETE_MEDIA $DELETE_DEVICE_MEDIA"
+	DELETE_VENDORLIBS="$DELETE_VENDORLIBS $DELETE_DEVICE_VENDORLIBS"
+	DELETE_VENDORLIBSHW="$DELETE_VENDORLIBSHW $DELETE_DEVICE_VENDORLIBSHW"
+	DELETE_XBINS="$DELETE_XBINS $DELETE_DEVICE_XBINS"
 
-# Fix LCD Density
-DEVICELCD=`sed -n -e'/ro\.sf\.lcd_density/s/^.*=//p' $OUT/system/build.prop`
-if [ "$DEVICELCD" = "240" ]; then
-   sed -i 's/ro.sf.lcd_density=240/ro.sf.lcd_density=182/g' $OUT/system/build.prop
-elif [ "$DEVICELCD" = "320" ]; then
-    sed -i 's/ro.sf.lcd_density=320/ro.sf.lcd_density=245/g' $OUT/system/build.prop
-elif [ "$DEVICELCD" = "480" ]; then
-    sed -i 's/ro.sf.lcd_density=480/ro.sf.lcd_density=370/g' $OUT/system/build.prop
-elif [ "$DEVICELCD" = "213" ]; then
-    sed -i 's/ro.sf.lcd_density=213/ro.sf.lcd_density=182/g' $OUT/system/build.prop
+	RENAME_BINS="$RENAME_BINS $RENAME_DEVICE_BINS"
+	RENAME_ETCS="$RENAME_ETCS $RENAME_DEVICE_ETCS"
+	RENAME_FONTS="$RENAME_FONTS $RENAME_DEVICE_FONTS"
+	RENAME_LIBS="$RENAME_LIBS $RENAME_DEVICE_LIBS"
+	RENAME_LIBSHW="$RENAME_LIBSHW $RENAME_DEVICE_LIBSHW"
+	RENAME_MEDIA="$RENAME_MEDIA $RENAME_DEVICE_MEDIA"
+	RENAME_VENDORLIBS="$RENAME_VENDORLIBS $RENAME_DEVICE_VENDORLIBS"
+	RENAME_VENDORLIBSHW="$RENAME_VENDORLIBSHW $RENAME_DEVICE_VENDORLIBSHW"
+	RENAME_XBINS="$RENAME_XBINS $RENAME_DEVICE_XBINS"
+
+	DeleteRepack "$DELETE_BINS"		"bin"
+	DeleteRepack "$DELETE_ETCS"		"etc"
+	DeleteRepack "$DELETE_FONTS" 		"fonts"
+	DeleteRepack "$DELETE_LIBS" 		"lib"
+	DeleteRepack "$DELETE_LIBSHW" 		"lib/hw"
+	DeleteRepack "$DELETE_MEDIA" 		"media"
+	DeleteRepack "$DELETE_VENDORLIBS" 	"vendor/lib"
+	DeleteRepack "$DELETE_VENDORLIBSHW" 	"vendor/lib/hw"
+	DeleteRepack "$DELETE_XBINS" 		"xbin"
+
+	RenameRepack "$RENAME_BINS" 		"bin"
+	RenameRepack "$RENAME_ETCS" 		"etc"
+	RenameRepack "$RENAME_FONTS" 		"fonts"
+	RenameRepack "$RENAME_LIBS" 		"lib"
+	RenameRepack "$RENAME_LIBSHW" 		"lib/hw"
+	RenameRepack "$RENAME_MEDIA" 		"media"
+	RenameRepack "$RENAME_VENDORLIBS" 	"vendor/lib"
+	RenameRepack "$RENAME_VENDORLIBSHW" 	"vendor/lib/hw"
+	RenameRepack "$RENAME_XBINS" 		"xbin"
+
+	# -------------------------
+
+	# Fix LCD Density
+	DEVICELCD=`sed -n -e'/ro\.sf\.lcd_density/s/^.*=//p' $REPACK/ota/system/build.prop`
+	if [ "$DEVICELCD" = "213" ]; then
+		sed -i 's/ro.sf.lcd_density=213/ro.sf.lcd_density=182/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICELCD" = "240" ]; then
+		sed -i 's/ro.sf.lcd_density=240/ro.sf.lcd_density=200/g'  $REPACK/ota/system/build.prop
+	elif [ "$DEVICELCD" = "320" ]; then
+		sed -i 's/ro.sf.lcd_density=320/ro.sf.lcd_density=280/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICELCD" = "480" ]; then
+		sed -i 's/ro.sf.lcd_density=480/ro.sf.lcd_density=400/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICELCD" = "560" ]; then
+		sed -i 's/ro.sf.lcd_density=560/ro.sf.lcd_density=493/g' $REPACK/ota/system/build.prop
+	fi
+
+	# Device specific LCD Density fix
+	DEVICEID=`sed -n -e'/ro\.product\.device/s/^.*=//p' $REPACK/ota/system/build.prop`
+	if [ "$DEVICEID" = "SGH-I717" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "GT-N7000" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "mako" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "flo" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "deb" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "amami" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $REPACK/ota/system/build.prop
+	elif [ "$DEVICEID" = "togari" ]; then
+	sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=300/g' $REPACK/ota/system/build.prop
+	fi
+
+	FirstSortLine=`grep -n 'Additional build properties' $REPACK/ota/system/build.prop | cut -d: -f1`
+	LastSortLine=`wc -l $REPACK/ota/system/build.prop | cut -d ' ' -f1`
+	head -n $FirstSortLine $REPACK/ota/system/build.prop > $REPACK/ota/system/build.new
+	head -n $((LastSortLine)) $REPACK/ota/system/build.prop | tail -n +$((FirstSortLine + 1)) | tr '\n[' '[\n' | sort | tr '\n[' '[\n' | grep -v '^\[$' | sort >> $REPACK/ota/system/build.new
+	rm $REPACK/ota/system/build.prop && mv $REPACK/ota/system/build.new $REPACK/ota/system/build.prop
 fi
 
-# Device specific LCD Density fix
-DEVICEID=`sed -n -e'/ro\.product\.device/s/^.*=//p' $OUT/system/build.prop`
-if [ "$DEVICEID" = "SGH-I717" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "GT-N7000" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "mako" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=268/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "flo" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "deb" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "amami" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=286/g' $OUT/system/build.prop
-elif [ "$DEVICEID" = "togari" ]; then
-   sed -i 's/ro.sf.lcd_density=245/ro.sf.lcd_density=300/g' $OUT/system/build.prop
-fi
-cp -f $OUT/system/build.prop $REPACK/ota/system/build.prop
+# -------------------------
 
 # Determine what to name the new signed package
 MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $REPACK/ota/system/build.prop`
@@ -144,7 +168,7 @@ echo MODVERSION: $MODVERSION
 
 # Pack it up and sign
 printf "Zipping package..."
-( cd $REPACK/ota; zip $QUIET -r $REPACK/update.zip . )
+( cd $REPACK/ota; zip -q -r $REPACK/update.zip . )
 echo
 printf "Signing package..."
 SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
@@ -177,7 +201,7 @@ done
 (
 img=`basename $OUTFILE`
 cd `dirname $OUTFILE`
-$MD5 $img >$img.md5sum
+md5sum $img >$img.md5sum
 ZIPSIZE=`ls -lah $OUTFILE | awk '{ print $5}' `
 echo -e $CL_CYN"Package complete"$CL_RST
 echo -e $CL_CYN"zip:"$CL_MAG" $OUTFILE"$CL_RST
