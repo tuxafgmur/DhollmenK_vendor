@@ -1,4 +1,5 @@
 # Copyright (C) 2013 The CyanogenMod Project
+# Tuxafgmur - Dhollmen
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ifneq ($(filter p3100 p3110 p5100 p5110 superior,$(TARGET_DEVICE)),)
-
+ifneq ($(filter i9100g p3100 p3110 p5100 p5110,$(TARGET_DEVICE)),)
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -26,18 +26,49 @@ LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := $(TARGET_OUT)/vendor/lib/hw
 include $(BUILD_PREBUILT)
 
-# Creating Gralloc SymLink
+else
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := gralloc.omap4460
+LOCAL_MODULE_OWNER := samsung
+LOCAL_SRC_FILES := system/vendor/lib/hw/gralloc.omap4460.so
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_MODULE_PATH := $(TARGET_OUT)/vendor/lib/hw
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := gralloc.omap4470
+LOCAL_MODULE_OWNER := samsung
+LOCAL_SRC_FILES := system/vendor/lib/hw/gralloc.omap4470.so
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_SUFFIX := .so
+LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_MODULE_PATH := $(TARGET_OUT)/vendor/lib/hw
+include $(BUILD_PREBUILT)
+
+endif
+
+#Create SymLinks
+
 GRALLOC_SYMLINK := $(TARGET_OUT_VENDOR)/lib/hw/gralloc.$(TARGET_BOARD_PLATFORM).so
-$(GRALLOC_SYMLINK): GRALLOC_FILE := gralloc.omap$(TARGET_BOARD_OMAP_CPU).so
+$(GRALLOC_SYMLINK): GRALLOC_FILE := ./gralloc.omap$(TARGET_BOARD_OMAP_CPU).so
 $(GRALLOC_SYMLINK): $(LOCAL_INSTALLED_MODULE) $(LOCAL_PATH)/Android.mk
 	@echo "Symlink: $@ -> $(GRALLOC_FILE)"
 	@rm -rf $@
 	$(hide) ln -fs $(GRALLOC_FILE) $@
 
 ALL_DEFAULT_INSTALLED_MODULES += $(GRALLOC_SYMLINK)
-
-# for mm/mmm
 all_modules: $(GRALLOC_SYMLINK)
 
-endif
+PVRSCOPE_SYMLINK := $(TARGET_OUT_VENDOR)/lib/libPVRScopeServices.so
+$(PVRSCOPE_SYMLINK): PVRSCOPE_FILE := ./libPVRScopeServices.$(TARGET_BOARD_PLATFORM).so
+$(PVRSCOPE_SYMLINK): $(LOCAL_INSTALLED_MODULE) $(LOCAL_PATH)/Android.mk
+	@echo "Symlink: $@ -> $(PVRSCOPE_FILE)"
+	@rm -rf $@
+	$(hide) ln -fs $(PVRSCOPE_FILE) $@
 
+ALL_DEFAULT_INSTALLED_MODULES += $(PVRSCOPE_SYMLINK)
+all_modules: $(PVRSCOPE_SYMLINK)
