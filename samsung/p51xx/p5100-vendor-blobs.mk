@@ -1,4 +1,5 @@
 # Copyright (C) 2012 The CyanogenMod Project
+# Tuxafgmur - Dhollmen
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := vendor/samsung/p51xx
+LOCAL_PATH := vendor/samsung
 
 PRODUCT_COPY_FILES := \
-    $(LOCAL_PATH)/p5100/sbin/cbd:root/sbin/cbd
+    $(LOCAL_PATH)/tab2-common/sbin/cbd:root/sbin/cbd
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/p5100/system/lib/libsec-ril.so:system/lib/libsec-ril.so \
-    $(LOCAL_PATH)/p5100/system/lib/libsecril-client.so:system/lib/libsecril-client.so \
+    $(LOCAL_PATH)/p51xx/p5100/system/lib/libsec-ril.so:system/lib/libsec-ril.so \
+    $(LOCAL_PATH)/tab2-common/system/lib/libsecril-client.so:system/lib/libsecril-client.so

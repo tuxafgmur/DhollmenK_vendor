@@ -1,4 +1,5 @@
 # Copyright (C) 2012 The CyanogenMod Project
+# Tuxafgmur - Dhollmen
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH := vendor/samsung/p31xx
+LOCAL_PATH := vendor/samsung
 
 # Prebuilt libraries that are needed to build open-source libraries
 PRODUCT_COPY_FILES := \
-    $(LOCAL_PATH)/p3110/system/lib/libril.so:obj/lib/libril.so \
-    $(LOCAL_PATH)/p3110/system/lib/libsecril-client.so:obj/lib/libsecril-client.so
+    $(LOCAL_PATH)/tab2-common/system/lib/libril.so:obj/lib/libril.so \
+    $(LOCAL_PATH)/tab2-common/system/lib/libsecril-client.so:obj/lib/libsecril-client.so
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/p3110/system/lib/libril.so:system/lib/libril.so \
-    $(LOCAL_PATH)/p3110/system/lib/libsecril-client.so:system/lib/libsecril-client.so
+    $(LOCAL_PATH)/tab2-common/system/lib/libril.so:system/lib/libril.so \
+    $(LOCAL_PATH)/tab2-common/system/lib/libsecril-client.so:system/lib/libsecril-client.so
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/p3110/system/lib/hw/sensors.omap4.so:system/lib/hw/sensors.omap4.so
+    $(LOCAL_PATH)/p31xx/p3110/system/lib/hw/sensors.omap4.so:system/lib/hw/sensors.omap4.so

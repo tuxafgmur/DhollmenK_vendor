@@ -1,5 +1,0 @@
-#!/system/bin/sh
-# Tab2 p5113 Tv Out script
-# CopyRight Tuxafgmur - Dhollmen
-
-[ -f /sys/devices/platform/omapdss/display1/sec_timing ] && start TvoutService_C
