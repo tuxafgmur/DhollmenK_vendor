@@ -118,6 +118,8 @@ if [ "z$TARGET_OTA_AS_BLOCK" = "z" ]; then
 	RenameRepack "$RENAME_VENDORLIBSHW" 	"vendor/lib/hw"
 	RenameRepack "$RENAME_XBINS" 		"xbin"
 
+	rm -rf $REPACK/ota/system/core
+
 	# -------------------------
 
 	# Fix LCD Density
