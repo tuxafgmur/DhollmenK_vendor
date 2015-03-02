@@ -20,6 +20,10 @@
     <string name="theme_settings_title">Tema oscuro real</string>
     <string name="lockscreen_lock_icon_slim">Icono de la Rom</string>
 
+    <string name="root_access">Acceso administrativo (Root)</string>
+    
+    <string name="header_category_rom_settings">Personalizacion</string>
+
     <string name="less_notification_sounds_3s">" 3 segundos"</string>
     <string name="less_notification_sounds_5s">" 5 segundos"</string>
     <string name="less_notification_sounds_10s">"10 segundos"</string>
